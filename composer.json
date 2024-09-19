@@ -1,5 +1,5 @@
 {
-  "name": "497450007",
+  "name": "497450007/tool",
   "description": "My custom PHP package",
   "type": "library",
   "require": {
