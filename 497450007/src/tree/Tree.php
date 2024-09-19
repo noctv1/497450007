@@ -235,10 +235,10 @@ class Tree
                         $tmpNode['children'][$i]['_level'] = $tmpNode['_level'] + 1;
                         if ($i == $childrenCount - 1) {
                             $oldList[$tmpNode['children'][$i][$idField]]['_is_last'] = 1;
-                            $oldList[$tmpNode['children'][$i][$idField]]['_spacer']  = str_repeat($this->nbsp, $tmpNode['children'][$i]['_level'] - 1) . $this->icon[2] . ' ';
+                            $oldList[$tmpNode['children'][$i][$idField]]['_spacer']  = Tree . phpstr_repeat($this->nbsp, $tmpNode['children'][$i]['_level'] - 1) . $this->icon[2] . ' ';
                         } else {
                             $oldList[$tmpNode['children'][$i][$idField]]['_is_last'] = 0;
-                            $oldList[$tmpNode['children'][$i][$idField]]['_spacer']  = str_repeat($this->nbsp, $tmpNode['children'][$i]['_level'] - 1) . $this->icon[1] . ' ';
+                            $oldList[$tmpNode['children'][$i][$idField]]['_spacer']  = Tree . phpstr_repeat($this->nbsp, $tmpNode['children'][$i]['_level'] - 1) . $this->icon[1] . ' ';
                         }
                         array_push($stack, $tmpNode['children'][$i]);
                     }
