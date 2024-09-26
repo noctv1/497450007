@@ -13,6 +13,9 @@ class CurlClient
         curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.104 Safari/537.36 Core/1.53.2372.400 QQBrowser/9.5.10548.400');
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($curl, CURLOPT_AUTOREFERER, 1);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 10); // 设置超时为 10 秒
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HEADER, 1); // 获取响应的 Header 和 Body
 
         // 处理 headers 键值对，转换成 cURL 需要的格式
         if (!empty($headers)) {
@@ -50,18 +53,19 @@ class CurlClient
             curl_setopt_array($curl, $options);
         }
 
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); // 需要返回响应体
-
         // 执行请求并获取结果
-        $result = curl_exec($curl);
+        $response = curl_exec($curl);
 
-        if ($result === false) {
+        if ($response === false) {
             // 获取 cURL 错误信息
             $error = curl_error($curl);
         } else {
             // 获取状态码
             $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            // 分离 Header 和 Body
+            $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+            $header = substr($response, 0, $headerSize);
+            $body = substr($response, $headerSize);
         }
 
         curl_close($curl);
@@ -69,7 +73,8 @@ class CurlClient
         // 返回状态码和响应体
         return [
             'code' => $httpCode ?? 0,
-            'body' => $result,
+            'header' => $header,
+            'body' => $body,
             'msg' => $error ?? "",
         ];
     }

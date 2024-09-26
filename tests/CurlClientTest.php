@@ -14,7 +14,6 @@ class CurlClientTest extends \PHPUnit\Framework\TestCase
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
         }
-        print_r($result);
         $this->assertIsArray($result,"curl request failed");
     }
 }
