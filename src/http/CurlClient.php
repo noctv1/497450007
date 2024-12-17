@@ -31,7 +31,12 @@ class CurlClient
             case 'POST':
                 curl_setopt($curl, CURLOPT_POST, 1);
                 if (!empty($data)) {
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                    //如果header中Content-Type为application/json，则$data需要json_encode
+                    if (isset($headers['Content-Type']) && trim($headers['Content-Type']) === 'application/json') {
+                        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data,256));
+                    } else {
+                        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                    }
                 }
                 break;
             case 'DELETE':
